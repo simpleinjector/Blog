@@ -60,6 +60,6 @@ A better solution is to avoid using the abstraction and its adapters entirely. A
 
 The definition of a DI abstraction is a painful mistake by Microsoft that will haunt us for many years to come. It has already stifled innovation, has introduced versioning hell, and frustrates many developers. The abstraction is incompatible with many DI libraries and, against expert advice, Microsoft chose to retain the abstraction, dividing the world into incompatible and partially compatible containers, leading to endless issue reports for the adapter libraries that implement the DI abstraction and third-party libraries that use the abstraction.
 
-Our view is that as an application developer, you should refrain from using an adapter and in [the next article](/blog/2016/07/working-around-the-asp-net-core-di-abstraction/) I will explain more thoroughly how to approach this and why, even without an incompatible container, it is the smarter way forward.
+Our view is that as an application developer, you should refrain from using an adapter and in [the next article](/2016/07/working-around-the-asp-net-core-di-abstraction/) I will explain more thoroughly how to approach this and why, even without an incompatible container, it is the smarter way forward.
 
 Stay tuned
