@@ -1,0 +1,27 @@
+title =        "Simple Injector Blog"
+author =       "Simple Injector Contributors"
+baseURL =      ""
+publishDir =   "../simpleinjector.github.io"
+theme =        "strange-case"
+languageCode = "en-us"
+paginate = 14
+defaultContentLanguage = "en"
+
+[permalinks]
+  posts = ":year/:month/:filename/"
+  
+[params]
+  colorScheme = "scheme-darkbrown"
+  DateFormat = "2 Jan 2006"
+  description = "Opinions and Best Practice from the Simple Injector Contributors"
+  sidebarDescription = ""
+  sidebarFreeText = ""
+  
+
+  
+pygmentsCodefences = true
+pygmentsCodefencesGuessSyntax = false
+pygmentsUseClassic = true
+pygmentsUseClasses = true
+# See https://xyproto.github.io/splash/docs/all.html for more styles
+pygmentsStyle = "pygments"
