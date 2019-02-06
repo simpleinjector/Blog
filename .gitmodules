@@ -1,0 +1,3 @@
+[submodule "themes/strange-case"]
+	path = themes/strange-case
+	url = https://github.com/dotnetjunkie/strange-case.git
