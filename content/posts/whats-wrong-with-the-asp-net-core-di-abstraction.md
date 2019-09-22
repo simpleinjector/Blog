@@ -48,7 +48,11 @@ With this explanation, we hope we’ve also made it clear that Microsoft’s DI 
 
 > there will definitely be behavior differences between the Autofac DI container and the Microsoft DI container. We’re not trying to behave identically – if you choose to use Autofac as your backing container, you’re also choosing the Autofac behaviors. The difference in behavior you found is one of probably many
 
-The [same holds](https://jeremydmiller.com/2017/09/11/proposal-for-structuremap-5/) for the maintainer of StructureMap that more recently stated:
+But while application developers do explicitly choose to use a particular container, like Autofac, framework and third-party library developers don't. And when those latter developers depend on abstraction behavior that Autofac implements differently, it can break the application in very subtle ways.
+
+Considering that Microsoft's DI Container is heavily influenced by Autofac's design, it is a telling sign that even Autofac can't comply with the abstraction.
+
+A [similar story](https://jeremydmiller.com/2017/09/11/proposal-for-structuremap-5/) comes from the maintainer of StructureMap that stated:
 
 > ASP.Net Core DI compliance has been a huge pain in the ass to the point where I’ve openly wondered if the ASP.Net team has purposely tried to sabotage and wipe out all the existing ecosystem of IoC containers 
 
