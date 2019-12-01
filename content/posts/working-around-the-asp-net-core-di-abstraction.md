@@ -23,13 +23,13 @@ Although developers might find this appealing, it’s important to realize that 
 
 In other words, in order to conform to the DIP, your application code should not depend on framework abstractions. Typically, code that depends on framework abstractions should exist wholly in the [Composition Root](https://freecontent.manning.com/dependency-injection-in-net-2nd-edition-understanding-the-composition-root/). The DIP and [ISP](https://en.wikipedia.org/wiki/Interface_segregation_principle "Interface Segregation Principle") promote the use of abstractions tailored to your application’s needs and the creation of adapter implementations. Instead of having a framework or external library dictate the size and shape of abstractions, the application under development should define what’s best for its particular needs. Not only does this result in clean and testable code, it makes the code more flexible and reusable.
 
-The [SOLID](https://en.wikipedia.org/wiki/SOLID) principles are of great guidance here, and since the DIP states that our application (upper) layer should only depend on its own abstractions, building up mixed object graphs is an anti-pattern. Having one container build up mixed object graphs leads developers to violate the SOLID principles and will undoubtedly cause pain in the long run.
+The [SOLID](https://en.wikipedia.org/wiki/SOLID) principles are of great guidance here, and since the DIP states that your application (upper) layer should only depend on its own abstractions, building up mixed object graphs is an anti-pattern. Having one container build up mixed object graphs leads developers to violate the SOLID principles and will undoubtedly cause pain in the long run.
 
-Instead of aiming for one DI library that builds everything up (one container to rule them all), we should keep these two worlds separate: framework components should be built up by the framework’s container, application components should be built up using our container of choice. To integrate or bridge the two worlds we define small focused adapters on each side. Use the framework’s provided extension points to intercept the creation of root types and forward the creation of those types to your container. On the other side of the container divide we define implementations for application-tailored abstractions, which call-back into framework and third-party library code. A well designed framework will have all the necessary abstractions in place for us to intercept. ASP.NET Core MVC already contains all the required hooks. third-party tool developers should follow the same practice.
+Instead of aiming for one DI library that builds everything up (one container to rule them all), you should keep these two worlds separate: framework components should be built up by the framework’s container, application components should be built up using your container of choice. To integrate or bridge the two worlds you define small focused adapters on each side. Use the framework’s provided extension points to intercept the creation of root types and forward the creation of those types to your container. On the other side of the container divide you define implementations for application-tailored abstractions, which call-back into framework and third-party library code. A well-designed framework will have all the necessary abstractions in place for you to intercept. ASP.NET Core MVC already contains all the required hooks. Third-party tool developers should follow the same practice.
 
 Some developers feel uncomfortable with the notion of two containers in single application. But if you view the built-in framework container as a configuration system for the framework, having an independent container for your own application components is a non-issue. Every framework has its own configuration system. ASP.NET Web Forms has its own configuration system (mainly XML based) and MVC & Web API have their own code-first configuration systems. In a sense, nothing much has changed; ASP.NET Core still has a configuration system, be it one that includes an internal container-like structure. Apparently this container gives them a lot of flexibility, which is great. But we never had the need to completely swap out a framework’s configuration system before, so why should we need to for ASP.NET Core?
 
-So how does this work? If we don’t want to swap out the built-in configuration system for .NET Core, what should we do? As said before, good practice is to use the framework’s supplied extension points and override as necessary to redirect/intercept the creation of certain types.
+So how does this work? If you don’t want to swap out the built-in configuration system for .NET Core, what should you do? As said before, good practice is to use the framework’s supplied extension points and override as necessary to redirect/intercept the creation of certain types.
 
 The main interception point for ASP.NET Core MVC is the `IControllerActivator` abstraction. This abstraction allows intercepting the creation of MVC controller types. An implementation for Simple Injector is trivial:
 
@@ -53,11 +53,11 @@ services.AddSingleton<IControllerActivator>(
     new SimpleInjectorControllerActivator(container));
 {{< / highlight >}}
 
-Although trivial to implement, we do provide an out-of-the-box implementation for you in our [ASP.NET Core MVC integration package](https://www.nuget.org/packages/SimpleInjector.Integration.AspNetCore.Mvc/) to make your life easier. As a matter of fact, over time we will supply you with with all the convenient methods that allow you to make bootstrapping as seamless as possible. We might not provide you with integration packages for all existing frameworks, but plugging in Simple Injector will always be trivial when the designers provided you with the correct interception points.
+Although trivial to implement, we do provide an out-of-the-box implementation for you in our [ASP.NET Core MVC integration package](https://www.nuget.org/packages/SimpleInjector.Integration.AspNetCore.Mvc/) to make your life easier. As a matter of fact, over time we will supply you with with all the convenient methods that allow you to make bootstrapping as seamless as possible. We might not provide you with integration packages for all existing frameworks, but plugging in Simple Injector will always be trivial *when the designers provided you with the correct interception points.*
 
 What this means is that all framework components and third-party components can keep being composed by the built-in DI container and your application will register and resolve your components through Simple Injector.
 
-Many developers incorrectly assume that having one container for the framework’s internal configuration and another for the application components will mean re-registering hundreds of framework and third-party library components in the application container, but this is simply not necessary. First of all, as we already established, those registrations shouldn’t be in the application container because no application component should directly depend on those abstractions. Secondly, your application will only need to interact with a handful of those services at most, so you’ll handle the abstractions you are actually interested in.
+Many developers incorrectly assume that having one container for the framework’s internal configuration and another for the application components will mean re-registering hundreds of framework and third-party library components in the application container, but this is simply not necessary. First of all, as we already established, those registrations shouldn’t be in the application container because no application component should directly depend on those abstractions. Secondly, your application will only need to interact with a handful of those services at most, so you’ll handle the abstractions you are actually interested in. Thirdly, trying to get all the framework's registrations inside your application container brings you back to square one: back to the Conforming Container with [all its complications, downsides, and incompatibilities](/2016/06/whats-wrong-with-the-asp-net-core-di-abstraction/).
 
 ## Examples
 
@@ -99,7 +99,7 @@ public interface IUserContext
 }
 {{< / highlight >}}
 
-With this abstraction, we can simplify our component to the following:
+With this abstraction, you can simplify your component to the following:
 
 {{< highlight csharp >}}
 public sealed class CustomerRepository : ICustomerRepository
@@ -121,17 +121,17 @@ public sealed class CustomerRepository : ICustomerRepository
 }
 {{< / highlight >}}
 
-What we have achieved here is that we:
+What you have achieved here is that you:
 
-* Decoupled our component from the framework code; it can be reused outside of ASP.NET.
+* Decoupled your component from the framework code; it can be reused outside of ASP.NET.
 * Prevented this component to have explicit knowledge about how to retrieve the current user’s name.
 * Prevented this code from being duplicated throughout the application.
 * Reduced test complexity.
 * Made the code simpler.
 
-Since we have decoupled our component from the framework code, we can now reuse the component. For instance, it’s quite common to want to run part of our code base in a background Windows Service where there is obviously no HttpContext. To make this work we will create an adapter implementation for IUserContext that is specific to the type of application we are building. For our ASP.NET application, we will need an adapter implementation that contains the original code that retrieves the user’s name. For a Windows Service, we might return the name of the system user.
+Since you have decoupled your component from the framework code, you can now reuse the component. For instance, it’s quite common to want to run part of your code base in a background Windows Service where there is obviously no `HttpContext`. To make this work you will create an adapter implementation for `IUserContext` that is specific to the type of application you are building. For your ASP.NET application, you will need an adapter implementation that contains the original code that retrieves the user’s name. For a Windows Service, you might return the name of the system user.
 
-Here’s our adapter implementation for ASP.NET:
+Here’s the adapter implementation for ASP.NET:
 
 {{< highlight csharp >}}
 public sealed class AspNetUserContext : IUserContext
@@ -142,9 +142,9 @@ public sealed class AspNetUserContext : IUserContext
 }
 {{< / highlight >}}
 
-As you can see, this adapter implementation is straightforward, all it does is getting the `HttpContext` for the current request and the user name is determined from the context, as we saw before.
+As you can see, this adapter implementation is straightforward, all it does is getting the `HttpContext` for the current request and the user name is determined from the context, as you saw before.
 
-This component can be registered in our application container as follows:
+This component can be registered in your application container as follows:
 
 {{< highlight csharp >}}
 var accessor =
@@ -154,13 +154,13 @@ container.RegisterSingleton<IUserContext>(new AspNetUserContext(accessor));
 
 The app variable here is ASP.NET Core’s `IApplicationBuilder`abstraction that gets injected into the `Startup.Configure` method.
 
-What we see here is that our `AspNetUserContext` adapter depends directly on the `IHttpContextAccessor` abstraction. We can do this because `IHttpContextAccessor` is one of the framework’s abstractions that we know for sure is registered as a singleton. For most framework and third-party services however, we will have no idea what lifestyle it is registered with, and therefore, resolving them directly using the `ApplicationServices` property of [IApplicationBuilder](https://docs.asp.net/projects/api/en/latest/autoapi/Microsoft/AspNetCore/Builder/IApplicationBuilder/) is a pretty bad idea.
+What you see here is that the `AspNetUserContext` adapter depends directly on the `IHttpContextAccessor` abstraction. You can do this because `IHttpContextAccessor` is one of the framework’s abstractions that are known to be registered as Singleton. For most framework and third-party services, however, we will have no idea what lifestyle it is registered with, and therefore, resolving them directly using the `ApplicationServices` property of [IApplicationBuilder](https://docs.asp.net/projects/api/en/latest/autoapi/Microsoft/AspNetCore/Builder/IApplicationBuilder/) is a pretty bad idea.
 
-Due to [another design flaw](https://simpleinjector.org/decisions#dont-allow-resolving-outside-an-active-scope), ASP.NET Core allows resolving scoped instances through the `ApplicationServices` property, but returns those components as singletons! In other words, if we were to request any framework and third-party services through `ApplicationServices`, the chances are that we would get a stale instance that would break our application at runtime—and ASP.NET Core will not inform us of our mistake. Instead of throwing an exception the ASP.NET Core will fail silently and leave our application in a potentially invalid state, maybe causing an `ObjectDisposedException` or worse. This is actually yet another incompatibility with Simple Injector; Simple Injector blocks these types of invalid resolves by throwing an exception.
+Due to [another design flaw](https://simpleinjector.org/decisions#dont-allow-resolving-outside-an-active-scope), ASP.NET Core allows resolving Scoped instances through the `ApplicationServices` property, but returns those components as Singletons! In other words, if you were to request any framework and third-party services through `ApplicationServices`, the chances are that you would get a stale instance that would break your application at runtime—and ASP.NET Core will not inform you of that error. Instead of throwing an exception, ASP.NET Core will fail silently and leave your application in a potentially invalid state, maybe causing an `ObjectDisposedException` or worse. This is actually yet another incompatibility with Simple Injector; Simple Injector blocks these types of invalid resolves by throwing an exception.
 
-UPDATE: ASP.NET Core 2.0 mitigates the resolution of scoped instances from the root container, when running in development mode. However, it will still not detect the resolution of any disposable transients from the root container. This will lead to memory leaks.
+UPDATE: ASP.NET Core 2.0 mitigates the resolution of Scoped instances from the root container, when running in development mode. However, it will still not detect the resolution of any disposable Transients from the root container. This will still lead to memory leaks.
 
-Instead of using the `ApplicationServices` property, it would be better to resolve services using the `HttpContext.RequestServices` property. The following adapter shows an example when dealing with framework dependencies with a lifestyle that is either not singleton or unknown:
+Instead of using the `ApplicationServices` property, it would be better to resolve services using the `HttpContext.RequestServices` property. The following adapter shows an example when dealing with framework dependencies with a lifestyle that is either not Singleton or unknown:
 
 {{< highlight csharp >}}
 public sealed class AspNetAuthorizerAdapter : IAuthorizer
@@ -176,7 +176,7 @@ public sealed class AspNetAuthorizerAdapter : IAuthorizer
 }
 {{< / highlight >}}
 
-Here we have an adapter for a hypothetical `IAuthorizer` abstraction. Instead of depending on ASP.NET’s `IAuthorizationService` directly, this adapter depends on `Func<IAuthorizationService>`, which allows the correctly scoped service to be resolved at runtime. This adapter can be registered as follows:
+This is an adapter for a hypothetical `IAuthorizer` abstraction. Instead of depending on ASP.NET’s `IAuthorizationService` directly, this adapter depends on `Func<IAuthorizationService>`, which allows the correctly Scoped service to be resolved at runtime. This adapter can be registered as follows:
 
 {{< highlight csharp >}}
 container.RegisterSingleton(
@@ -184,7 +184,7 @@ container.RegisterSingleton(
         GetAspNetServiceProvider<IAuthorizationService>(app)));
 {{< / highlight >}}
 
-The `AspNetAuthorizationAdapter` is created and registered as singleton. The registration makes use of the convenient `GetAspNetServicesProvider<T>` helper method that allows creating the provider delegate:
+The `AspNetAuthorizationAdapter` is created and registered as Singleton. The registration makes use of the convenient `GetAspNetServicesProvider<T>` helper method that allows creating the provider delegate:
 
 {{< highlight csharp >}}
 private static Func<T> GetAspNetServiceProvider<T>(IApplicationBuilder app)
@@ -208,7 +208,7 @@ When supplied with an `IApplicationBuilder` instance, the `GetAspNetServiceProvi
 
 Besides a DI library, .NET Core ships with a logging library out-of-the-box. Any application developer can use the built-in logger abstraction directly in their applications. But should they? If you look at the [`ILogger` abstraction](https://github.com/aspnet/Logging/blob/1.0.0/src/Microsoft.Extensions.Logging.Abstractions/ILogger.cs) supplied to us by Microsoft, it’s hard to deny that the abstraction is very generic in nature and might very well not suit your application’s specific needs. The previous arguments still hold: application code should be in control over the abstraction.
 
-The SOLID principles guide us defining an application-specific abstraction for logging. The exact shape of this abstraction will obviously differ from application to application (but look at [this example](https://stackoverflow.com/questions/5646820/logger-wrapper-best-practice) for inspiration). Again, a simple adapter implementation can do the transition from application code to framework code:
+The SOLID principles guide you towards defining an application-specific abstraction for logging. The exact shape of this abstraction will obviously differ from application to application (but look at [this example](https://stackoverflow.com/questions/5646820/logger-wrapper-best-practice) for inspiration). Again, a simple adapter implementation can do the transition from application code to framework code:
 
 {{< highlight csharp >}}
 // your application's logging abstraction
@@ -241,4 +241,4 @@ But there are [other options](https://stackoverflow.com/a/41244169/264697) when 
 
 ## Conclusion
 
-By creating application specific abstractions, we prevent our code from taking unnecessary dependencies on external code, making them more flexible, testable and maintainable. We can define simple adapter implementations for the abstractions we need to use, while hiding the details of connecting to external code. This allows our application to use our container of choice (and supports a [container-less](https://blog.ploeh.dk/2014/06/10/pure-di/) approach). This approach is part of a set of principles and practices that is been taught by experts like Robert C. Martin and others for decades already. Don’t ignore these practices, embrace them and be both productive and successful.
+By creating application-specific abstractions, you prevent your code from taking unnecessary dependencies on external code, making it more flexible, testable and maintainable. You can define simple adapter implementations for the abstractions you need to use, while hiding the details of connecting to external code. This allows your application to use your container of choice (and supports a [container-less](https://blog.ploeh.dk/2014/06/10/pure-di/) approach). This approach is part of a set of principles and practices that is been taught by experts like Robert C. Martin and others for decades already. Don’t ignore these practices, embrace them and be both productive and successful.
