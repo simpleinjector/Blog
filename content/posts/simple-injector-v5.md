@@ -1,6 +1,6 @@
 ---
 title:	"Simple Injector v5 - Virus edition"
-date:	2020-06-12
+date:	2020-06-11
 author: Steven
 draft:	false
 ---
