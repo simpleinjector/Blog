@@ -27,6 +27,8 @@ Changing this behavior has been long on my radar and is something I discussed wi
 
 With the introduction of v5, we flipped the switch, meaning that resolution of unregistered concrete types is now disabled by default. We advise you keep the default behavior as-is and ensure you register all concrete types directly. If your current application heavily depends on unregistered concrete types being resolved, you can resore the old behavior by setting `Container.Options.ResolveUnregisteredConcreteTypes` to `true`.
 
+For more details, please see [the documentation](https://simpleinjector.org/ructd).
+
 ### The container is now automatically verified when first resolved.
 
 Just as it's a good idea to explicitly register all types up front, we have learned that it is a good idea to trigger container verification automatically on the first resolve.
