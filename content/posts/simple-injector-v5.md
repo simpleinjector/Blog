@@ -5,7 +5,7 @@ author: Steven
 draft:	false
 ---
 
-It's been over three years since we released Simple Injector 4.0. The number of features that mean a bumping the major version number have been piling up on the backlog, and so we started work on the next major release a few months ago. And it's finally here! We've removed legacy methods, improved performance, fixed bugs, added features, and continued to push the library towards a [stratgey of best-practice](https://simpleinjector.org/principles+best-practices).
+It's been 10 years since the birth of Simple Injector, and three years since we released Simple Injector 4.0. The number of features that mean bumping the major version number have been piling up on the backlog, and so we started work on the next major release a few months ago. And it's finally here! We've removed legacy methods, improved performance, fixed bugs, added features, and continued to push the library towards a [stratgey of best-practice](https://simpleinjector.org/principles+best-practices).
 
 **There are quite a few breaking changes, which will likely impact you when migrating from v4 to v5. There are two changes in particular that you should be aware of: the handling of unregistered concrete types and auto-verification. Please read on to understand what has changed and why.**
 
@@ -13,9 +13,9 @@ In this blog post we describe the most prominent changes and their rational, sta
 
 ### Unregistered concrete types are no longer resolved.
 
-Simple Injector has always promoted best practices and this is an evolving process. Over the years, for instance, we figured out it was better to:
+Simple Injector has always promoted best practices and this is an evolving process. Over the years, for instance, we figured out it was better to require:
 
-- require an active scope for resolving scoped instances
+- an active scope for resolving scoped instances
 - collections to be registered, even if empty
 - container-uncontrolled collections to be wrapped with transient decorators solely
 
@@ -23,15 +23,15 @@ These insights where gained during the development process and for each we decid
 
 Resolving unregistered concrete types is a similar case. While the ability to resolve and inject unregistered types can be an appealing concept, we have noticed that developers are often tripped over this behavior. In the past, we have introduced new verification features (such as the [Short-Circuited Dependencies diagnostic warning](https://simpleinjector.org/diasc)) to help reduce issues but errors still occur.
 
-Changing this behavior has been long on my radar and is something I discussed with the other contributors even before the release of v4, over three years ago. Unfortunately, at that time, we were too close to the release of v4 and needed more time to assess the impact to our users. That's why we posponed the change to v5. Instead, we introduced a switch in v4 that allowed disabling this behavior and started promoting disabling this behavior in the documentation. This would allow new users and new projects to use the new settings and existing users to migrate at their own pace.
+Changing this behavior has been long on my radar and is something I [discussed](https://github.com/simpleinjector/SimpleInjector/issues/377) with the other contributors even before the release of v4, over three years ago. Unfortunately, at that time, we were too close to the release of v4 and needed more time to assess the impact to our users. That's why we posponed the change to v5. Instead, we introduced a switch in v4 that allowed disabling this behavior and started promoting disabling this behavior in the documentation. This would allow new users and new projects to use the new settings and existing users to migrate at their own pace.
 
-With the introduction of v5, we flipped the switch, meaning that resolution of unregistered concrete types is now disabled by default. We advise you keep the default behavior as-is and ensure you register all concrete types directly. If your current application heavily depends on unregistered concrete types being resolved, you can resore the old behavior by setting `Container.Options.ResolveUnregisteredConcreteTypes` to `true`.
+With the introduction of v5, we flipped the switch, meaning that resolution of unregistered concrete types is now disabled by default. We advise you keep the default behavior as-is and ensure you register all concrete types directly. If your current application heavily depends on unregistered concrete types being resolved, you can resore the old behavior by setting `Container.Options.ResolveUnregisteredConcreteTypes` to `true`. For more details, check [the documentation](https://simpleinjector.org/ructd).
 
-For more details, please see [the documentation](https://simpleinjector.org/ructd).
+Another important change that will likely impact you is auto verification.
 
 ### The container is now automatically verified when first resolved.
 
-Just as it's a good idea to explicitly register all types up front, we have learned that it is a good idea to trigger container verification automatically on the first resolve.
+Just as it's a good idea to explicitly register all types up front, we have learned that it is a good idea to trigger container verification automatically on first resolve.
 
 Many developers using Simple Injector don't realize its full potential and forget to call `Container.Verify()`. We often see developers run into problems that a call to `Verify()` would have prevented. This is why in v5 we decided to automatically trigger full verification including diagnostics when the very first registration is resolved.
 
@@ -46,29 +46,33 @@ There are two likely scenarios where you would want to suppress verification:
 
 Disabling auto-verification can be done by setting `Container.Options.EnableAutoVerification` to `false`.
 
+Although auto verification and disabled unregistered type resolution are the two changes that will impact most users, there are other changes, such as the discontinued support for .NET 4.0.
+
 ### No more .NET 4.0
 
-We have dropped support for .NET 4.0, **the minimum supported versions are now .NET 4.5 and .NET Standard 1.0.**
+We have dropped support for .NET 4.0: **the minimum supported versions are now .NET 4.5 and .NET Standard 1.0.**
 
-.NET 4.0 was released on 12 April 2010, which is more than a decade ago. It has been superseded with .NET 4.5 on 15 August 2012—now almost 8 years ago. It's time to let go of .NET 4.0, even though there may be some development teams still relying on it.
+.NET 4.0 was released on 12 April 2010, which is more than a decade ago. It has been superseded with .NET 4.5 on 15 August 2012—now almost 8 years ago. It's time to let go of .NET 4.0, even though there may be some Simple Injector users that are stuck to .NET 4.0.
 
-Developing software is always about finding a balance. Keeping support for older versions supported comes with costs—even for an open-source project. Perhaps even *especially* for open-source projects where development is done in free time (and free time is precious).
+Developing software is always about finding a balance. Keeping older versions supported comes with costs—even for an open-source project. Perhaps even *especially* for open-source projects where development is done in free time (and free time is precious).
 
-The introduction of support for .NET Standard introduced some complexity in the library, caused by the changing Reflection API. This new Reflection API was later added to .NET 4.5, but that lead to the use of `#if` preprocessor directives, additional build outputs and risk of introducing errors. This is complexity we wanted to get rid of, and a new major release is the time to do so. This comes with the risk of frustrating developers that maintain old applications and still want to enjoy improvements in Simple Injector. We're truly sorry if this frustrates your project, and hope that Simple Injector v4 serves you well until you can migrate to .NET 4.5 and beyond.
+The introduction of support for .NET Standard introduced complexity in the library, caused by the changing Reflection API. This new Reflection API was later added to .NET 4.5, but that lead to the use of `#if` preprocessor directives, additional build outputs and risk of introducing errors. This is complexity we wanted to get rid of, but that meant ditching support for .NET 4.0.
+
+This comes with the risk of frustrating developers that maintain old applications and still want to enjoy improvements in Simple Injector. We're truly sorry if this frustrates your project, and hope that Simple Injector v4 serves you well until you can migrate to .NET 4.5 and beyond.
+
+If you feel frustrated by the removal of .NET 4.0, perhaps the next change will cheer you up.
 
 ### Less first-chance exceptions
 
 More recently, Microsoft made some changes to Visual Studio that have impacted Simple Injector users. One of those changes is how Visual Studio handles first-chance exceptions by default.
 
-When debugging an application, not all exceptions have to be dealt with. When a third-party or framework library catches an exception and continues, you can safely ignore that exception. Where older versions of Visual Studio didn't show these exceptions by default, newer versions of Visual Studio automatically stop the debugger and popup the exception window. This can be really confusing because it's not always immediately clear whether the first-chance exception is being dealt with by the library component or is one that breaks your application.
-
-I have wasted many hours because of this. Even Microsoft libraries throw exceptions that they recover from themselves!
+When debugging an application, not all exceptions have to be dealt with. When a third-party or framework library catches an exception and continues, you can safely ignore that exception. Where older versions of Visual Studio didn't show these exceptions by default, newer versions of Visual Studio automatically stop the debugger and popup the exception window. This can be really confusing because it's not always immediately clear whether the first-chance exception is being dealt with by the library component or is one that breaks your application. Admittedly, I have wasted many hours because of this, because even Microsoft libraries throw exceptions that they recover from themselves!
 
 In Simple Injector 4, there are times where the library would throw an exception that it caught elsewhere and handled itself. This design worked well in the older versions of Visual Studio. But since stopping at first-chance exceptions is the new norm, the behavior is problematic for our users. Not only does it cause confusion, getting those constant exception popups during startup can be really annoying.
 
 In v5 we changed the APIs that would throw and catch exceptions. They now follow the 'try-parse' pattern and return a `boolean`. This does mean, however, it's a breaking change. In case you have a custom `IConstructorSelectionBehavior` or `IDependencyInjectionBehavior` implementation, you will need to change your implementation. 
 
-It was impossible for us to completely remove all first-chance exceptions from the library and there are still edge cases where exceptions are caught—most notably in the generics sub system. There are some edge cases where Simple Injector can't correctly determine generic type constraints, which means that it relies on the framework to communicate the existence of such a constraint. This part of the .NET Reflection API lacks a 'try-parse' API and we're stuck with catching exceptions. The chances, however, of you hitting this are very slim, because it only happens under very special conditions.
+It was impossible for us to completely remove all first-chance exceptions from the library and there are still edge cases where exceptions are caught—most notably in the generics sub system. There are some situations where Simple Injector can't correctly determine generic type constraints, which means that it relies on the framework to communicate the existence of such a constraint. This part of the .NET Reflection API lacks a 'try-parse' API and we're stuck with catching exceptions (there currently is a [proposal](https://github.com/dotnet/runtime/issues/28033) to add such method in .NET 5.0, but untill now the Microsoft team is note very supportive). The chances, however, of you hitting this are very slim, because it only happens under very special conditions.
 
 ### Simplified registration of disposable components
 
@@ -121,9 +125,9 @@ public class Bar
 }
 {{< / highlight >}}
 
-The class `X` will be receive a `DependencyMetadata<T>`, which is a new Simple Injector type. This metadata gives access to the dependency's **InstanceProducer**, its implementation type, and allows the type to be resolved by calling **GetInstance()**.
+The class `X` will receive a `DependencyMetadata<T>`, which is a new Simple Injector type. This metadata gives access to the dependency's **InstanceProducer**, its implementation type, and allows the type to be resolved by calling **GetInstance()**.
 
-Admittedly, this is a rather advanced feature that not many users will need. It's meant to be used inside infrastructure components (i.e. classes that are part of the Composition Root). Instructure components sometimes require more information about the dependency and need to be able to lazily resolve it. The feature is *not* meant to be used *outside* the Composition Root, because that would cause your application to take a dependency on Simple Injector, which is something we advise against.
+Admittedly, this is a rather advanced feature that not many users will need. It's meant to be used inside infrastructure components (i.e. classes that are part of the [Composition Root](https://mng.bz/K1qZ)). Instructure components sometimes require more information about the dependency and need to be able to lazily resolve it. The feature is *not* meant to be used *outside* the Composition Root, because that would cause your application to take a dependency on Simple Injector, which is something we advise against.
 
 For a more elaborate example of this this feature, see [the documentation](https://simpleinjector.org/advanced+metadata).
 
