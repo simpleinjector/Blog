@@ -5,7 +5,7 @@ author: Steven
 draft:	false
 ---
 
-It's been 10 years since the birth of Simple Injector, and three years since we released Simple Injector 4.0. The number of features that mean bumping the major version number have been piling up on the backlog, and so we started work on the next major release a few months ago. And it's finally here! We've removed legacy methods, improved performance, fixed bugs, added features, and continued to push the library towards a [stratgey of best-practice](https://simpleinjector.org/principles+best-practices).
+It's been 10 years since the birth of Simple Injector, and three years since we released Simple Injector 4.0. The number of features that mean bumping the major version number have been piling up on the backlog, and so we started work on the next major release a few months ago. And it's finally here! We've removed legacy methods, improved performance, fixed bugs, added features, and continued to push the library towards a [strategy of best-practice](https://simpleinjector.org/principles+best-practices).
 
 **There are quite a few breaking changes, which will likely impact you when migrating from v4 to v5. There are two changes in particular that you should be aware of: the handling of unregistered concrete types and auto-verification. Please read on to understand what has changed and why.**
 
@@ -13,7 +13,7 @@ In this blog post we describe the most prominent changes and their rational, sta
 
 ### Unregistered concrete types are no longer resolved.
 
-Simple Injector has always promoted best practices and this is an evolving process. Over the years, for instance, we figured out it was better to require:
+Simple Injector has always promoted best practices, and this is an evolving process. Over the years, for instance, we figured out it was better to require:
 
 - an active scope for resolving scoped instances
 - collections to be registered, even if empty
@@ -23,9 +23,9 @@ These insights where gained during the development process and for each we decid
 
 Resolving unregistered concrete types is a similar case. While the ability to resolve and inject unregistered types can be an appealing concept, we have noticed that developers are often tripped over this behavior. In the past, we have introduced new verification features (such as the [Short-Circuited Dependencies diagnostic warning](https://simpleinjector.org/diasc)) to help reduce issues but errors still occur.
 
-Changing this behavior has been long on my radar and is something I [discussed](https://github.com/simpleinjector/SimpleInjector/issues/377) with the other contributors even before the release of v4, over three years ago. Unfortunately, at that time, we were too close to the release of v4 and needed more time to assess the impact to our users. That's why we posponed the change to v5. Instead, we introduced a switch in v4 that allowed disabling this behavior and started promoting disabling this behavior in the documentation. This would allow new users and new projects to use the new settings and existing users to migrate at their own pace.
+Changing this behavior has been long on my radar and is something I [discussed](https://github.com/simpleinjector/SimpleInjector/issues/377) with the other contributors even before the release of v4, over three years ago. Unfortunately, at that time, we were too close to the release of v4 and needed more time to assess the impact to our users. That's why we postponed the change to v5. Instead, we introduced a switch in v4 that allowed disabling this behavior and started promoting disabling this behavior in the documentation. This would allow new users and new projects to use the new settings and existing users to migrate at their own pace.
 
-With the introduction of v5, we flipped the switch, meaning that resolution of unregistered concrete types is now disabled by default. We advise you keep the default behavior as-is and ensure you register all concrete types directly. If your current application heavily depends on unregistered concrete types being resolved, you can resore the old behavior by setting `Container.Options.ResolveUnregisteredConcreteTypes` to `true`. For more details, check [the documentation](https://simpleinjector.org/ructd).
+With the introduction of v5, we flipped the switch, meaning that resolution of unregistered concrete types is now disabled by default. We advise you keep the default behavior as-is and ensure you register all concrete types directly. If your current application heavily depends on unregistered concrete types being resolved, you can restore the old behavior by setting `Container.Options.ResolveUnregisteredConcreteTypes` to `true`. For more details, check [the documentation](https://simpleinjector.org/ructd).
 
 Another important change that will likely impact you is auto verification.
 
