@@ -3,6 +3,9 @@ title:	"The Tale of the Async Interfaces"
 date:	2020-12-15
 author: Steven
 draft:	false
+aliases:
+    - 2020/12/the-tail-of-the-async-interfaces
+
 ---
 
 > With the release of Simple Injector v5, I made an error of judgement. To support asynchronous disposal of the `Container` and `Scope` objects I added a dependency from the core library to the Microsoft.Bcl.AsyncInterfaces NuGet package. Unfortunately, this proved to be a very painful mistake. In this blog post I'll explain why I choose to take this dependency, why this was a mistake, and how this finally got fixed in [v5.2](https://github.com/simpleinjector/SimpleInjector/releases/tag/5.2.0).
