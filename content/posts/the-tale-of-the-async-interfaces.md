@@ -1,5 +1,5 @@
 ---
-title:	"The Tail of the Async Interfaces"
+title:	"The Tale of the Async Interfaces"
 date:	2020-12-15
 author: Steven
 draft:	false
