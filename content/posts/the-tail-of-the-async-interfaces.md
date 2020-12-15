@@ -8,6 +8,9 @@ draft:	false
 > With the release of Simple Injector v5, I made an error of judgement. To support asynchronous disposal of the `Container` and `Scope` objects I added a dependency from the core library to the Microsoft.Bcl.AsyncInterfaces NuGet package. Unfortunately, this proved to be a very painful mistake. In this blog post I'll explain why I choose to take this dependency, why this was a mistake, and how this finally got fixed in [v5.2](https://github.com/simpleinjector/SimpleInjector/releases/tag/5.2.0).
 
 ## Double Trouble
+
+<img align="right" width="40%" style="max-width:275px;" src="/images/diamondduck.png">
+
 With the introduction of .NET Core 3, Microsoft added a new `IAsyncDisposable` interface as asynchronous counterpart of `IDisposable`. In order enable asynchronous disposal in older framework versions (i.e. .NET Core 2.0 and .NET 4.6.1), Microsoft published the [Microsoft.Bcl.AsyncInterfaces](https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/) NuGet package. Where the package's `net461` and `netstandard2.0` targets contain assemblies that specify—among other things—the `IAsyncDisposable` interface, the `netstandard2.1` target assembly uses type forwarding to reference the framework's version.
 
 The publication of the AsyncInterfaces NuGet packages allowed Simple Injector v5.0 to start using the `IAsyncDisposable` interface. This allowed Simple Injector to asynchronously dispose of classes implementing `IAsyncDisposable`. It also allowed users to dispose of both `Scope` and `Container` in an asynchronous fashion.
