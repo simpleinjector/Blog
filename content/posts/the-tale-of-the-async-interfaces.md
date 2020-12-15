@@ -64,7 +64,7 @@ The greatest disadvantage of this approach, from a user's perspective, is that I
 
 To prevent incompatible signatures, while still allowing both the `Container` and `Scope` to be disposed of asynchronously, methods with completely different names needed to be added. This is why you'll find `DisposeContainerAsync()` and `DisposeScopeAsync()` methods on `Container` and `Scope` respectively. I'm the first to agree that this is bats-ugly, but it’s the best I could come up with.
 
-On the flip side, however, because of the use of duck typing, Simple Injector can now support asynchronous disposal *on all of its builds*. Where previously asynchronous disposal was only supported on the .NET 4.6.1 and .NET Standard 2.0 builds of Simple Injector, with the introduction of Simple Injector v5.2, asynchronous disposal is supported on .NET 4.5 and .NET Standard 1.0 as well. Although its not possible to reference AsyncInterfaces' `IAsyncDisposable` in your application, you can simply define `System.IAsyncDisposable` somewhere in your application, and it just works. Here's an example:
+On the flip side, however, because of the use of duck typing, Simple Injector can now support asynchronous disposal *on all of its builds*. Where previously asynchronous disposal was only supported on the `net461` and `netstandard2.0` builds of Simple Injector, with the introduction of Simple Injector v5.2, asynchronous disposal is supported on `net45` and `netstandard1.0` as well. Although its not possible to reference AsyncInterfaces' `IAsyncDisposable` in your application, you can simply define `System.IAsyncDisposable` somewhere in your application, and it just works. Here's an example:
 
 ``` c#
 namespace System
