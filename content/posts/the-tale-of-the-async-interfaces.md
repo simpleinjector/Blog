@@ -78,6 +78,6 @@ namespace System
 
 Even though the official `IAsyncDisposable` interface exposes `ValueTask` rather than `Task`, Simple Injector accepts this alternative definition anyway. As long as the interface is called "System.IAsyncDisposable" and there's a method named "DisposeAsync" which either returns `Task` or `ValueTask`, everything will just run smoothly. This allows you to start using asynchronous disposal until you can migrate to your code base to .NET Core 3 or .NET 5.
 
-All the sweat and tears I poured over my keyword in the past weeks to get this fixed are now dried up and materialized in the Simple Injector code [v5.2](https://github.com/simpleinjector/SimpleInjector/releases/tag/5.2.0) code base. This will certainly not fix all your binding redirect issues but will at least ensure that Simple Injector is not amplifying the problem any longer.
+All the sweat and tears I poured over my keyboard in the past weeks to get this fixed are now dried up and materialized in the Simple Injector code [v5.2](https://github.com/simpleinjector/SimpleInjector/releases/tag/5.2.0) code base. This will certainly not fix all your binding redirect issues but will at least ensure that Simple Injector is not amplifying the problem any longer.
 
 Happy injecting.
