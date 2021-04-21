@@ -129,7 +129,7 @@ The class `Foo` will receive a `DependencyMetadata<T>`, which is a new Simple In
 
 The example's `Bar` class, on the other hand, receives a list of `DependencyMetadata<T>` instances, which is useful for the injection of lists of dependencies.
 
-Admittedly, this is a rather advanced feature that not many users will need. It's meant to be used *inside* infrastructure components (i.e. classes that are part of the [Composition Root](https://mng.bz/K1qZ)). Instructure components sometimes require more information about the dependency and need to be able to lazily resolve it. The feature is *not* meant to be used *outside* the Composition Root, because that would cause your application to take a dependency on Simple Injector, which is something we advise against.
+Admittedly, this is a rather advanced feature that not many users will need. It's meant to be used *inside* infrastructure components (i.e. classes that are part of the [Composition Root](https://mng.bz/K1qZ)). Infrastructure components sometimes require more information about the dependency and need to be able to lazily resolve it. The feature is *not* meant to be used *outside* the Composition Root, because that would cause your application to take a dependency on Simple Injector, which is something we advise against.
 
 For a more elaborate example of this this feature, see [the documentation](https://simpleinjector.org/advanced+metadata).
 
