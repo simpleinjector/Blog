@@ -34,7 +34,7 @@ Simple Injector’s diagnostic abilities is just one of the many incompatibiliti
 
 * The way Simple Injector [explicitly separates the registration of collections](https://simpleinjector.org/separate-collections) from one-to-one mappings
 * How Simple Injector handles open-generic registrations; they are not treated as fall-back registrations as they are by the built-in container
-* How Simple Injector handles scoping—Scopes in Simple Injector are ambient while .NET Core forces an [ambient-less scoping model](https://github.com/aspnet/DependencyInjection/issues/334).
+* How Simple Injector handles scoping—Scopes in Simple Injector are ambient while .NET Core forces an [ambient-less scoping model](https://github.com/aspnet/DependencyInjection/issues/334) (i.e. a [Closure Composition Model](https://blogs.cuttingedge.it/steven/posts/2019/closure-composition-model/)).
 
 Making a fully compatible adapter for Simple Injector requires removing many prominent features, and thereby changing the existing behaviour of the Simple Injector library to something that would violate the guiding principles that underpin our vision. This is not an attractive solution. Not only would it introduce major breaking changes, it would remove features and behaviours that make Simple Injector unique and it is this complete set of features that many developers love about Simple Injector. In this sense having an adapter “stifles innovation” as Mark Seemann describes.
 
