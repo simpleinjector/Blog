@@ -12,7 +12,7 @@ aliases:
 
 ## Double Trouble
 
-<img align="right" width="40%" style="max-width:275px;" src="/images/diamondduck.png">
+<img align="right" width="40%" style="max-width:275px;" src="/images/diamondduck.png" loading="lazy" decoding="async">
 
 With the introduction of .NET Core 3, Microsoft added a new `IAsyncDisposable` interface as asynchronous counterpart of `IDisposable`. In order enable asynchronous disposal in older framework versions (i.e. .NET Core 2.0 and .NET 4.6.1), Microsoft published the [Microsoft.Bcl.AsyncInterfaces](https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/) NuGet package. Where the package's `net461` and `netstandard2.0` targets contain assemblies that specify—among other things—the `IAsyncDisposable` interface, the `netstandard2.1` target assembly uses type forwarding to reference the framework's version.
 
