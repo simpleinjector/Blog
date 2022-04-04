@@ -9,7 +9,7 @@ aliases:
 
 After months of preparation and development we have finally released [Simple Injector v3.0](https://www.nuget.org/packages/SimpleInjector/). In version 3 we are breaking from the past: we have removed legacy methods, simplified parts of the API and added some compelling new features.
 
-_**We expect that almost every developer will have to make changes to his/her composition root when upgrading to v3.** We did our best to make the upgrade process easy but please be prepared to make changes to your code._
+_**We expect that almost every developer will have to make changes to their composition root when upgrading to v3.** We did our best to make the upgrade process easy but please be prepared to make changes to your code._
 
 The driver for making these breaking changes is that parts of the API have evolved over time and in doing so have grown confusing (e.g. `RegisterOpenGeneric` and `RegisterManyForOpenGeneric`). In the pursuit of keeping Simple Injector simple we felt obligated to improve the consistency of the API. These decisions have not been taken lightly because we hate breaking your code. Our driving force is, however, a simpler and more compelling library for everyone.
 
