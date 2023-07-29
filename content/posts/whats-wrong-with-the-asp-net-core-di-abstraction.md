@@ -56,7 +56,9 @@ A [similar story](https://jeremydmiller.com/2017/09/11/proposal-for-structuremap
 
 UPDATE: Other maintainers of DI containers are also starting to notice how the new DI abstraction is stifling innovation. The developer of the [LightInject](https://www.lightinject.net/) DI Container, for instance, had to completely disable one of its library's compelling features to allow his adapter to be used in a vanilla ASP.NET Core v2.2 application, to prevent it from [completely crashing](https://github.com/aspnet/Extensions/issues/686) at startup.
 
-UPDATE: Due to [similar incompatibilities](https://github.com/castleproject/Windsor/issues/120) with the built-in container, the Castle Windsor maintainers were forced to take a [similar integration approach](https://github.com/castleproject/Windsor/blob/master/docs/aspnetcore-facility.md) to ours, which we describe in our next blog post. In other words, Castle Windsor's integration works around the ASP.NET Core DI abstraction as well.
+UPDATE (2019-09): Due to [similar incompatibilities](https://github.com/castleproject/Windsor/issues/120) with the built-in container, the Castle Windsor maintainers were forced to take a [similar integration approach](https://github.com/castleproject/Windsor/blob/master/docs/aspnetcore-facility.md) to ours, which we describe in our next blog post. In other words, Castle Windsor's integration works around the ASP.NET Core DI abstraction as well.
+
+UPDATE (2023-07): With .NET 8, Microsoft introduces keyed registrations to their DI Container, which —once more— [frustrates](https://twitter.com/jeremydmiller/status/1684359969708146688) maintainers of other DI Containers.
 
 This wouldn’t be so bad if Microsoft’s DI library was a feature-rich implementation that contained features like Simple Injector’s verification and diagnostic services so that we all use the same fully featured DI library. Sadly, the implementation is far from feature rich, Microsoft itself has [described](https://blogs.msdn.microsoft.com/webdev/2014/06/17/dependency-injection-in-asp-net-vnext/) their implementation as a
 
