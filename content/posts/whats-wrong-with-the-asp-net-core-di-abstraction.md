@@ -58,13 +58,13 @@ UPDATE: Other maintainers of DI containers are also starting to notice how the n
 
 UPDATE (2019-09): Due to [similar incompatibilities](https://github.com/castleproject/Windsor/issues/120) with the built-in container, the Castle Windsor maintainers were forced to take a [similar integration approach](https://github.com/castleproject/Windsor/blob/master/docs/aspnetcore-facility.md) to ours, which we describe in our next blog post. In other words, Castle Windsor's integration works around the ASP.NET Core DI abstraction as well.
 
-UPDATE (2023-07): With .NET 8, Microsoft introduces keyed registrations to their DI Container, which —once more— [frustrates](https://twitter.com/jeremydmiller/status/1684359969708146688) maintainers of other DI Containers.
-
 This wouldn’t be so bad if Microsoft’s DI library was a feature-rich implementation that contained features like Simple Injector’s verification and diagnostic services so that we all use the same fully featured DI library. Sadly, the implementation is far from feature rich, Microsoft itself has [described](https://blogs.msdn.microsoft.com/webdev/2014/06/17/dependency-injection-in-asp-net-vnext/) their implementation as a
 
 > minimalistic DI container [that] is useful in the cases when you don’t need any advanced injection capabilities
 
 To make matters worse, since the built-in container defines the contract of the abstraction, adding new features to the built-in container will break all existing adapters! Third-party developers who use the abstraction will only test with the built-in container and when their libraries depend on a feature added to the built-in container that is not yet supported by an adapter, things will fail and the application developer is screwed. This is one aspect of the versioning hell that Mark Seemann discusses in his blog post. Not only is their current implementation “minimalistic,” it can never evolve to a feature rich, completely usable DI container, because they’ve painted themselves in a corner: every future change is breaking change that will piss everyone off.
+
+UPDATE (2023-07): This is exactly what happened with the introduction of .NET 8, where Microsoft introduces keyed registrations to their DI Container. This —once more— [frustrates](https://twitter.com/jeremydmiller/status/1684359969708146688) maintainers of DI Container adapters, that now all have you upgrade their integration packages, again.
 
 A better solution is to avoid using the abstraction and its adapters entirely. As Mark Seemann quite accurately explained [here](https://blog.ploeh.dk/2014/05/19/di-friendly-library/) and [here](https://blog.ploeh.dk/2014/05/19/di-friendly-framework/), reusable libraries and frameworks may not need to use a DI container at all.
 
